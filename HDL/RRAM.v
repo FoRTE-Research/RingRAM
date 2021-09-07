@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module RRAM #(parameter g_RRAM_INV=1, g_RRAM_CELLS=64)(
+module RRAM #(parameter g_RRAM_INV=5, g_RRAM_CELLS=64)(
     input  [g_RRAM_CELLS-1:0] en,
     output [g_RRAM_CELLS-1:0] inv_2
 );
