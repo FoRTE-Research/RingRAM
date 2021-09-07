@@ -1,4 +1,5 @@
 import sys
+import getopt
 import os
 import xdcAddBlocks as xdc
 
@@ -10,11 +11,13 @@ elif (FPGA=='A735'):  N_CELLS=50; N_INV=5; POS_X=16; POS_Y=100;
 elif (FPGA=='VC709'): N_CELLS=64; N_INV=5; POS_X=78; POS_Y=300;
 
 #Update defaults if arguments passed in
-if len(sys.argv) > 1 : FPGA    = sys.argv[1]
-if len(sys.argv) > 2 : N_CELLS = int(sys.argv[2])
-if len(sys.argv) > 3 : N_INV   = int(sys.argv[3])
-if len(sys.argv) > 4 : POS_X   = int(sys.argv[4])
-if len(sys.argv) > 5 : POS_Y   = int(sys.argv[5])
+opts, args = getopt.getopt(sys.argv[1:], 'f:F:c:C:i:I:x:X:y:Y', ['FPGA=', 'CELLS=', 'INV=', 'POSX=', 'POSY='])
+for opt, arg in opts:
+    if   opt in ('-f', '-F', '--FPGA'):  FPGA    = arg
+    elif opt in ('-c', '-C', '--Cells'): N_CELLS = int(arg)
+    elif opt in ('-i', '-I', '--INV'):   N_INV   = int(arg)
+    elif opt in ('-x', '-X', '--POSX'):  POS_X   = int(arg)
+    elif opt in ('-y', '-Y', '--POSY'):  POS_Y   = int(arg)
 
 #Set paths
 file_name='./top_level_'+FPGA+'.xdc'
