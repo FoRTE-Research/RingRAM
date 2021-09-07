@@ -40,7 +40,9 @@ Creating vivado project manually:
 To evaluate the 
 
 ### Evaluation Block Diagram
-![Evaluation Block Diagram](/fig/RRAM_eval_block.png "Evaluation Block Diagram")
+<p align="center">
+	<img src="/fig/RRAM_eval_block.png" />
+</p>
 
 1. Debouncer -- Debounces the reset button
 2. Clock Divider -- Utilizes a MMCM to divide the source clock to a 10MHz clock
@@ -48,7 +50,9 @@ To evaluate the
 4. Uart Controller -- Transmits the current state of 
 
 ### Evaluation State Machine
-![Evaluation State Machine](/fig/RRAM_eval_SM.png "Evaluation State Machine")
+<p align="center">
+	<img src="/fig/RRAM_eval_SM.png" />
+</p>
 
 1. Low/High Enable -- Iterate through each RingRAM cell setting their enables. Low enables prevent any feedback and reset the race condition.
 2. Low/High Wait -- Wait time between each reset
