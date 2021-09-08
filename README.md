@@ -7,7 +7,7 @@ This repository contains artifacts to enable reviewers to reproduce the experime
 ## Prerequisites
 Software required to execute included demos:
 1. [Vivado Design Suit](https://www.xilinx.com/support/download.html): Synthesising and Implementing RingRAM on included evaluation boards
-2. [python3](https://www.python.org/downloads/): Required for capturing data and customing place/route
+2. [python3](https://www.python.org/downloads/): Required for capturing data and customizing place/route
 3. make: Run build scripts
 
 ## Evaluation Boards
@@ -37,7 +37,7 @@ Creating vivado project manually:
 6. Add Constraints - Include Xilinx Design Constraints (.xdc) files in HDL directory
 
 ## Evaluation
-To evaluate the 
+To utilize RingRAM in any design, one need only to instantiate the RingRAM component found in ```./HDL/RRAM.v```. However to evaluate RingRAM we create a state machine (```./HDL/RRAM_CTRL.v```) that controls the enables of the RingRAM cells and transmits their states through a UART port (```./HDL/UART_CTRL.v```). Controlling the enables allows use to set and reset their race condition: LOW enables prevents any feedback forcing the outputs to be high, HIGH enables initiates the race condition. To properly evaluate RingRAM cells we must capture and examine the result of multiple race condition across multiple cells. To do our state machine continuously toggles the enable and transmits the cells outputs through the serial. To optimize serial communication we do not encode our data in ASCII, instead the raw binary values of all the cells are transmitted in bursts. To capture and store these iterations we wrote a script (```./scripts/captureSerial```) that automatically verifies that when LOW enable all outputs are HIGH and when HIGH enable stores the outputs of the race conditions in a log file.
 
 Command:
 ```
@@ -45,7 +45,7 @@ python3 ./scripts/captureSerial [-P] [-F]
 ```
 Parameters:
 1. ```[-p] [-P] [--PORT]```: Location of the serial port (ex. /dev/ttyUSB#)
-1. ```[-f] [-F] [--FILE]```: File output path
+2. ```[-f] [-F] [--FILE]```: File output path
 
 ### Evaluation Block Diagram
 <p align="center">
@@ -65,7 +65,7 @@ Parameters:
 1. Low/High Enable -- Iterate through each RingRAM cell setting their enables. Low enables prevent any feedback and reset the race condition.
 2. Low/High Wait -- Wait time between each reset
 3. Low/High Write -- Snapshot the output state of each RingRAM cell
-4. Low/High Serial -- Transmite RingRAM cell snapshot
+4. Low/High Serial -- Transmit  RingRAM cell snapshot
 5. Low/High Serial Wait -- Wait for serial to finish transmission
 
 ## Customizations
@@ -104,5 +104,5 @@ To customize the number of RingRAM cells modify the:
 The RingRAM primitive ```./HDL/RRAM.v``` can be instantiated in any design or on any FPGA. To customize the number of cells or the length of the inverter chains set the ``` g_RRAM_CELLS``` or ``` g_RRAM_INV``` parameters respectively.
 
 However to port the RingRAM layout it is necessary to modify the:
-1.  ```./scripts/xdcRingRAMCC```: ```[-P]``` parameter
-2. ```./scripts/xdcAddBlocks```: add blocks to contain the equivalent pinouts and pblock locations.
+1.  ```./scripts/xdcRingRAMCC```: ```[-P]``` and ```[-F]``` parameter
+3.  ```./scripts/xdcAddBlocks```: add blocks to contain the equivalent pinouts and pblock locations.
