@@ -1,10 +1,12 @@
 import serial
 import sys
+import getopt
 import os
 import glob
 
 ENTRIES=320000
-
+PORT='/dev/ttyUSB1'
+FILE='./'
 
 def getSerialLogs(fileDir='../data/', fileName='RRAMLog', comPort='/dev/ttyUSB1', baudRate=115200):
     if not os.path.exists(fileDir):
@@ -39,8 +41,12 @@ def getSerialLogs(fileDir='../data/', fileName='RRAMLog', comPort='/dev/ttyUSB1'
         ser.close()
         f.close()
 
-if len(sys.argv) > 1 : PORT = sys.argv[1]
-else                 : PORT='/dev/ttyUSB1'
+#Update defaults if arguments passed in
+opts, args = getopt.getopt(sys.argv[1:], 'p:P:f:F', ['PORT=','FILE='])
+for opt, arg in opts:
+    if   opt in ('-p', '-P', '--PORT'):  PORT = arg
+    elif opt in ('-f', '-F', '--FILE'):  FILE = arg
 
-getSerialLogs(fileDir='./', comPort=PORT)
+#Capture serial Data
+getSerialLogs(fileDir=FILE, comPort=PORT)
 
