@@ -39,6 +39,14 @@ Creating vivado project manually:
 ## Evaluation
 To evaluate the 
 
+Command:
+```
+python3 ./scripts/captureSerial [-P] [-F]
+```
+Parameters:
+1. ```[-p] [-P] [--PORT]```: Location of the serial port (ex. /dev/ttyUSB#)
+1. ```[-f] [-F] [--FILE]```: File output path
+
 ### Evaluation Block Diagram
 <p align="center">
 	<img src="/fig/RRAM_eval_block.png" />
