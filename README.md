@@ -7,7 +7,7 @@ This repository contains artifacts to enable reviewers to reprodude the experime
 ## Prerequisites
 Software required to execute included demos:
 1. [Vivado Design Suit](https://www.xilinx.com/support/download.html): Synthesising and Implementing RingRAM on included evaluation boards
-2. python3: Required for capturing data and customing place/route
+2. [python3](https://www.python.org/downloads/): Required for capturing data and customing place/route
 3. make: Run build scripts
 
 ## Evaluation Boards
@@ -60,12 +60,41 @@ To evaluate the
 4. Low/High Serial -- Transmite RingRAM cell snapshot
 5. Low/High Serial Wait -- Wait for serial to finish transmition
 
-## Modifications
+## Customizations
+There are two sources of variation that a designer must avoid when implementing RingRAM: systematic and structural. Systematic variation occurs both at manufacturing- and run-time. Systematic variation occurs due to predictable changes in transistor properties at chip- and wafer-scale and due to long-running changes in a device’s operational environment. We provide two guidelines to avoid these sources of variation:
+1. **Symmetric**: As both components and wires have the potential to add structural variation, use symmetrical placement and routing to avoid structural variation.
+2. **Tightly-packed**: By keeping the chains of a cell physically adjacent and its routing short, there is little room for systematic variation to influence chains asymmetrically.
 
+The ```xdcRingRAMCC``` scrpit generate a Xilinx Design Constraints (.xdc) file that adheres to these guidelines.
+
+Command:
+```
+python3 ./scripts/xdcRingRAMCC [-F] [-C] [-I] [-X] [-Y] [-P]
+```
+Parameters:
+1. ```[-f] [-F] [--FPGA]```: Which FPGA design to use (A7100, A735, VC709)
+2. ```[-c] [-C] [--CELLS]```: How many RingRAM cells to create
+3. ```[-i] [-I] [--INV]```: Length of the RingRAM inverter chain (1,3,5,7)
+4. ```[-x] [-X] [--POSX]```: Starting horizontal index of the FPGA LUT
+5. ```[-y] [-Y] [--POSY]```: Starting verticalindex of the FPGA LUT
+6. ```[-p] [-P] [--PATH]```: The location and name of the RingRAM primtive
 
 ### Placement
+To customize the physcial location of the RingRAM cells modify the ```[-X]``` and ```[-Y]``` parameters. However, as it is important to keep symmetry, you should examine the LUT placements of the FPGA. Open the synthesis/implmentation design in Vivado and examine the layout to determine which cells to use.
 
 ### Inverter Chain Length
+To customize the inverter chain length of the RingRAM cells modify the:
+1. ```./scripts/xdcRingRAMCC```: The```[-I]``` parameter
+2. ```./HDL/top_level```: The ``` g_RRAM_INV``` parameter
 
-### Porting to another FPGAs
+### RingRAM Cells
+To customize the number of RingRAM cells modify the:
+1. ```./scripts/xdcRingRAMCC```: The```[-C]``` parameter
+2. ```./HDL/top_level```: The ``` g_RRAM_CELLS``` parameter
 
+### Porting to another FPGA
+The RingRAM primitive ```./HDL/RRAM.v``` can be instantiated in any design or on any FPGA. To customize the number of cells or the length of the inverter chains set the ``` g_RRAM_CELLS``` or ``` g_RRAM_INV``` parameters respectivly.
+
+However to port the RingRAM layout it is nessary modify the:
+1.  ```xdcRingRAMCC```: ```[-P]``` parameter
+2. ```./scripts/xdcAddBlocks```: add blocks to contain the equivelent pinouts and pblock locations.
