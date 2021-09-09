@@ -7,7 +7,7 @@ set xdcPath   [lindex $argv 5]
 
 #Create Project
 create_project [list ${pName}] [list ${pPath}] -part [list ${fpgaPart}] -force
-set_property board_part [list ${boardPart}] [current_project]
+#set_property board_part [list ${boardPart}] [current_project]
 add_files -norecurse [list ./HDL/CLK_DIV.v ./HDL/DEBOUNCER.v ./HDL/UART_CTRL.v ./HDL/UART_TX.vhd ./HDL/RRAM_CTRL.v ./HDL/RRAM.v ./HDL/my_and.v ./HDL/my_nand.v ./HDL/my_not.v ${topPath} ]
 
 import_files -force -norecurse
