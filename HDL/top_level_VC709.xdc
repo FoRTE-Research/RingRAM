@@ -5,20 +5,14 @@ set_property PACKAGE_PIN G18 [get_ports clk_n]
 set_property IOSTANDARD DIFF_SSTL15 [get_ports clk_n]
 
 #Uart
-set_property IOSTANDARD LVCMOS18 [get_ports TX]
-set_property PACKAGE_PIN AU36 [get_ports TX]
+set_property -dict { PACKAGE_PIN AU36  IOSTANDARD LVCMOS18 } [get_ports { TX }];
 
 #Buttons
-set_property IOSTANDARD LVCMOS18 [get_ports {BUTTON[4]}]
-set_property PACKAGE_PIN AR40 [get_ports {BUTTON[4]}]
-set_property IOSTANDARD LVCMOS18 [get_ports {BUTTON[3]}]
-set_property PACKAGE_PIN AU38 [get_ports {BUTTON[3]}]
-set_property IOSTANDARD LVCMOS18 [get_ports {BUTTON[2]}]
-set_property PACKAGE_PIN AP40 [get_ports {BUTTON[2]}]
-set_property IOSTANDARD LVCMOS18 [get_ports {BUTTON[1]}]
-set_property PACKAGE_PIN AW40 [get_ports {BUTTON[1]}]
-set_property IOSTANDARD LVCMOS18 [get_ports {BUTTON[0]}]
-set_property PACKAGE_PIN AV39 [get_ports {BUTTON[0]}]
+set_property -dict { PACKAGE_PIN AV39  IOSTANDARD LVCMOS18 } [get_ports { BUTTON[0] }];
+set_property -dict { PACKAGE_PIN AW40  IOSTANDARD LVCMOS18 } [get_ports { BUTTON[1] }];
+set_property -dict { PACKAGE_PIN AP40  IOSTANDARD LVCMOS18 } [get_ports { BUTTON[2] }];
+set_property -dict { PACKAGE_PIN AU38  IOSTANDARD LVCMOS18 } [get_ports { BUTTON[3] }];
+set_property -dict { PACKAGE_PIN AR40  IOSTANDARD LVCMOS18 } [get_ports { BUTTON[4] }];
 
 create_pblock pblock_clk_div
 add_cells_to_pblock [get_pblocks pblock_clk_div] [get_cells -quiet [list clk_div]]

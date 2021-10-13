@@ -8,7 +8,9 @@ ENTRIES=320000
 PORT='/dev/ttyUSB1'
 FILE='./'
 
-def getSerialLogs(fileDir='../data/', fileName='RRAMLog', comPort='/dev/ttyUSB1', baudRate=115200):
+PRIMITIVE='RRAM\r\n'
+
+def getSerialLogs(fileDir='../data/', fileName='SerialLog', comPort='/dev/ttyUSB1', baudRate=115200):
     if not os.path.exists(fileDir):
         os.makedirs(fileDir)
 
@@ -24,18 +26,25 @@ def getSerialLogs(fileDir='../data/', fileName='RRAMLog', comPort='/dev/ttyUSB1'
         
         #Wait for header
         serial_in = ser.readline()
-        while serial_in != b'RRAM\r\n':
+        while serial_in != PRIMITIVE.encode('UTF-8'):
             serial_in = ser.readline()
-        f.write("RRAM\r\n")
+        f.write(PRIMITIVE)
+        f.flush()
         
         serialByte={}
         #Capture Data
         for i in range(0, ENTRIES, 1):
             serialByte = ser.read(16)
             serialBin = ''.join([bin(i)[2:].zfill(8) for i in list(serialByte)])
-            f.write(serialBin[64:128]+"\r\n")
-            if(serialBin[0:64]!="1111111111111111111111111111111111111111111111111111111111111111"):
-                print("ENABLE LOW FAIL - line %d - Check %s Output %s" % (i, serialBin[0:64], serialBin[64:128]))
+
+            if(PRIMITIVE=='RO  \r\n'):
+                f.write(serialBin[ 0: 64]+"\r\n")
+                f.write(serialBin[64:128]+"\r\n")
+            elif(PRIMITIVE=='RRAM\r\n'):
+                f.write(serialBin[64:128]+"\r\n")
+                if(serialBin[0:64]!="1111111111111111111111111111111111111111111111111111111111111111"):
+                    print("ENABLE LOW FAIL - line %d - Check %s Output %s" % (i, serialBin[0:64], serialBin[64:128]))
+            f.flush()
 
         #Close objects
         ser.close()

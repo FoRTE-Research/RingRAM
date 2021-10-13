@@ -1,3 +1,4 @@
+
 # RingRAM
 
 RingRAM is a single hardware security primitive composed of basic circuit elements that harnesses both manufacturing and operational chaos to serve as the foundation for both a true random-number generator (TRNG) and a physical unclonable function (PUF) suitable for deployment in resource-constrained Internet-of-Things (IoT) devices.
@@ -6,9 +7,22 @@ This repository contains artifacts to enable reviewers to reproduce the experime
 
 ## Prerequisites
 Software required to execute included demos:
-1. [Vivado Design Suit](https://www.xilinx.com/support/download.html): Synthesising and Implementing RingRAM on included evaluation boards
-2. [python3](https://www.python.org/downloads/): Required for capturing data and customizing place/route
-3. make: Run build scripts
+1. [Vivado Design Suite](https://www.xilinx.com/support/download.html): Synthesising and Implementing RingRAM on included evaluation boards
+    ```
+    chmod +x <installer>.bin
+    sudo ./<installer>.bin
+    ```
+3. [python3](https://www.python.org/downloads/): Required for capturing data and customizing place/route
+	- pySerial - library used for serial port communication
+    ```
+    sudo apt-get install python3
+    pip3 install pyserial
+    ```
+
+4. make: Run build scripts
+    ```
+    sudo apt-get install build-essential
+    ```
 
 ## Evaluation Boards
 Evaluation Boards included in this demo
@@ -46,6 +60,20 @@ python3 ./scripts/captureSerial [-P] [-F]
 Parameters:
 1. ```[-p] [-P] [--PORT]```: Location of the serial port (ex. /dev/ttyUSB#)
 2. ```[-f] [-F] [--FILE]```: File output path
+
+
+Issue: Permission Denied
+
+ 1. See all available groups type:
+    ```
+    compgen -g
+    ```
+
+ 2. Search for serial group (i.e. `tty`, `dialout`) 
+ 3. Add yourself to serial group
+    ```
+    sudo usermod -a -G tty yourname
+    ```
 
 ### Evaluation Block Diagram
 <p align="center">
