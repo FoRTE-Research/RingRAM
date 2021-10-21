@@ -12,10 +12,25 @@ Software required to execute included demos:
     chmod +x <installer>.bin
     sudo ./<installer>.bin
     ```
+	- Installing cable drivers
+    ```
+    sudo /tools/Xilinx/Vivado/<version>/data/xicom/cable_drivers/lin64/install_script/install_drivers/install_drivers
+    ```
+	- Setting Vivado environment:
+    ```
+    source /tools/Xilinx/Vivado/<version>/settings64.sh
+    ```
+	- Perminantly adding Vivado environment:
+    ```
+    echo source /tools/Xilinx/Vivado/<version>/settings64.sh >> ~/.bashrc
+    ```
+    
 3. [python3](https://www.python.org/downloads/): Required for capturing data and customizing place/route
-	- pySerial - library used for serial port communication
     ```
     sudo apt-get install python3
+    ```
+	- pySerial - library used for serial port communication
+    ```
     pip3 install pyserial
     ```
 
