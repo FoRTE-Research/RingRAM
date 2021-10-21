@@ -6,23 +6,30 @@ import glob
 
 ENTRIES=320000
 PORT='/dev/ttyUSB1'
-FILE='./'
+FILE='./data/SerialLog'
 
 PRIMITIVE='RRAM\r\n'
 
-def getSerialLogs(fileDir='../data/', fileName='SerialLog', comPort='/dev/ttyUSB1', baudRate=115200):
+def getSerialLogs(filePath='./data/SerialLog', comPort='/dev/ttyUSB1', baudRate=115200):
+    
+    #Extract File Dir
+    fileDir=os.path.dirname(os.path.abspath(filePath))
+    
+    #If Dir does not exist
     if not os.path.exists(fileDir):
         os.makedirs(fileDir)
 
-    #Remove previous file
-    if os.path.exists(fileDir+fileName):
-      os.remove(fileDir+fileName)
+    #If file already exists
+    if os.path.exists(filePath):
+      os.remove(filePath)
+      
+    print(filePath)
 
     #Serial setup
     ser = serial.Serial(comPort, baudRate, xonxoff=False, timeout=1)
 
     #Write serial input to file
-    with open(fileDir+fileName, 'a') as f:
+    with open(filePath, 'a') as f:
         
         #Wait for header
         serial_in = ser.readline()
@@ -51,11 +58,12 @@ def getSerialLogs(fileDir='../data/', fileName='SerialLog', comPort='/dev/ttyUSB
         f.close()
 
 #Update defaults if arguments passed in
-opts, args = getopt.getopt(sys.argv[1:], 'p:P:f:F', ['PORT=','FILE='])
+opts, args = getopt.getopt(sys.argv[1:], 'p:P:f:F:', ['PORT=','FILE='])
 for opt, arg in opts:
     if   opt in ('-p', '-P', '--PORT'):  PORT = arg
     elif opt in ('-f', '-F', '--FILE'):  FILE = arg
 
 #Capture serial Data
-getSerialLogs(fileDir=FILE, comPort=PORT)
+getSerialLogs(filePath=FILE, comPort=PORT)
+
 

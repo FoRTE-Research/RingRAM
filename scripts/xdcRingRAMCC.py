@@ -10,19 +10,22 @@ if   (FPGA=='A7100'): N_CELLS=64; N_INV=5; POS_X=38; POS_Y=128;
 elif (FPGA=='A735'):  N_CELLS=50; N_INV=5; POS_X=16; POS_Y=100;
 elif (FPGA=='VC709'): N_CELLS=64; N_INV=5; POS_X=78; POS_Y=300;
 RRAM_PATH='rram_ctrl/rram'
+FILE_PATH=''
 
 #Update defaults if arguments passed in
-opts, args = getopt.getopt(sys.argv[1:], 'f:F:c:C:i:I:x:X:y:Y:p:P', ['FPGA=', 'CELLS=', 'INV=', 'POSX=', 'POSY=', 'PATH='])
+opts, args = getopt.getopt(sys.argv[1:], 'f:F:c:C:i:I:x:X:y:Y:p:P:l:L:', ['FPGA=', 'CELLS=', 'INV=', 'POSX=', 'POSY=', 'PATH=', 'LOC='])
 for opt, arg in opts:
     if   opt in ('-f', '-F', '--FPGA'):  FPGA      = arg
     elif opt in ('-c', '-C', '--Cells'): N_CELLS   = int(arg)
     elif opt in ('-i', '-I', '--INV'):   N_INV     = int(arg)
     elif opt in ('-x', '-X', '--POSX'):  POS_X     = int(arg)
     elif opt in ('-y', '-Y', '--POSY'):  POS_Y     = int(arg)
-    elif opt in ('-p', '-P', '--PATH'):  RRAM_PATH = arg
+    elif opt in ('-p', '-P', '--PATH'):  FILE_PATH = arg
+    elif opt in ('-l', '-L', '--LOC'):   RRAM_PATH = arg
 
-#Set paths
-file_name='./top_level_'+FPGA+'.xdc'
+#Set file path if not set
+if(FILE_PATH==''): FILE_PATH='./top_level_'+FPGA+'.xdc'
+print(FILE_PATH)
 
 #Assign Lut locations based on inverter size
 if  (N_INV==1): LUTLOC=['D5', 'A6']
@@ -31,11 +34,11 @@ elif(N_INV==5): LUTLOC=['B6', 'C6', 'D6', 'B5', 'D5', 'A6']
 elif(N_INV==7): LUTLOC=['B6', 'C6', 'D6', 'A5', 'B5', 'C5', 'D5', 'A6']
 
 #Remove Previous file
-if os.path.exists(file_name):
-  os.remove(file_name)
+if os.path.exists(FILE_PATH):
+  os.remove(FILE_PATH)
           
 #Create New File
-file = open(file_name, mode='w')
+file = open(FILE_PATH, mode='w')
 
 #Add Board pinouts
 xdc.addClock(file, FPGA)

@@ -8,13 +8,19 @@ This repository contains artifacts to enable reviewers to reproduce the experime
 ## Prerequisites
 Software required to execute included demos:
 1. [Vivado Design Suite](https://www.xilinx.com/support/download.html): Synthesising and Implementing RingRAM on included evaluation boards
+	- Library dependencies
+    ```
+    sudo apt-get install libtinfo5
+    ```
+	- Execute vivado installer script
     ```
     chmod +x <installer>.bin
     sudo ./<installer>.bin
     ```
 	- Installing cable drivers
     ```
-    sudo /tools/Xilinx/Vivado/<version>/data/xicom/cable_drivers/lin64/install_script/install_drivers/install_drivers
+    cd /tools/Xilinx/Vivado/<version>/data/xicom/cable_drivers/lin64/install_script/install_drivers/
+    sudo ./install_drivers
     ```
 	- Setting Vivado environment:
     ```
@@ -22,7 +28,7 @@ Software required to execute included demos:
     ```
 	- Perminantly adding Vivado environment:
     ```
-    echo source /tools/Xilinx/Vivado/<version>/settings64.sh >> ~/.bashrc
+    echo -e "\nsource /tools/Xilinx/Vivado//<version>/settings64.sh" >> ~/.bashrc
     ```
     
 3. [python3](https://www.python.org/downloads/): Required for capturing data and customizing place/route
